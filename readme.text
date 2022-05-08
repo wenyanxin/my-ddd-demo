@@ -1,0 +1,74 @@
+SAAS授权服务
+
+此项目为SAAS授权服务的所有功能父项目，涉及如下子项目
+
+
+saas-authorize-api
+saas-authorize-application
+saas-authorize-bootstart
+saas-authorize-code
+saas-authorize-domain
+saas-authorize-infrastructure
+saas-authorize-interfaces
+
+
+每个子项都有自身主要负责的功能点
+
+
+子项目说明
+
+
+saas-authorize-api
+
+saas-authorize-api 主要是提供对外的接口包括dubbo fegin，对外支持的DTO对象，支持的事件
+
+
+saas-authorize-application
+
+saas-authorize-application 授权模块中会有与其他业务交叉的地方，保留上下游服务数据的地方，发起业务聚合的地方，多个领域汇聚的地方。application是对domain的封装和编排提供业务接口
+
+saas-authorize-application会有如下概念存在
+
+
+1 中间业务数据
+2 上下游业务数据
+3 多业务领域接口调用
+4 对domain层调用
+5 持续迭代过程中application层中的业务也可能会慢慢固化到domain层中
+
+
+
+saas-authorize-bootstart
+
+saas-authorize-bootstart  主要是做容器的作用，启动整个项目，统一的数据库配置，事务配置，配置中心等
+
+
+saas-authorize-code
+
+saas-authorize-code 主要是一些公共的utils功能类，如有需求可以提供一些方便外部系统接入调用的支持性功能类
+
+
+saas-authorize-domain
+
+saas-authorize-domain 授权领域模块的核心流程代码，在这里所谓的领域就是授权这个业务在持续迭代后总结出来的标准化的流程（SOP流程），这些流程会被固化，提供标准的接口
+
+
+saas-authorize-infrastructure
+
+saas-authorize-infrastructure 基础设施层
+
+
+1 持久化实现，如各种介质的存储，mysql redis mongodb等
+2 依赖 领域层 定义的接口，及领域层所有存储的实现都由基础设施层来实现
+
+
+
+saas-authorize-interfaces
+
+saas-authorize-interfaces 表示层/接口层/DDD最顶层
+
+
+1 所有对外的请求都由本层进行管理，包括定时任务、HTTP接口、RPC接口、事件订阅(消息消费)
+2 依赖application(服务编排层)、infrastructure（基础设施层）
+3 实现api(对外RPC)接口， code(工具包)可通过RPC、HTTP方式请求本层接口
+4 本层可对spring框架相关进行设定，如过滤器、监听器等进行配置
